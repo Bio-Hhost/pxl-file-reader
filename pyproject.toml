@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pxl-file-reader"
+version = "0.2"
+description = "Python package to process PXL files from Biospacelab Photon Imagers"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "GPL-2.0-or-later"
+license-files = ["LICENSE"]
+authors = [
+  {name = "Mathias Weyland", email = "mathias.weyland@zhaw.ch"}
+]
+dependencies = [
+  "numpy>=1.23"
+]
+
+[project.urls]
+Homepage = "https://github.com/Bio-Hhost/pxl-file-reader"
