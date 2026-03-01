@@ -86,6 +86,18 @@ Each frame block in the payload begins with a small container‑level preamble, 
 
 The pixel payload itself is a bit‑packed sparse row encoding designed to be compact when most pixels are zero. The decoder initializes a full `height × width` image with zeros and then overlays only the non‑zero events present in the stream. For each row that contains events, the payload first encodes a row record header of 22 bits: eleven bits for the row index and eleven bits for the count of non‑zero pixels in that row. It then follows with exactly `count` pairs of values, each pair consuming 23 bits: eleven bits for the column index and twelve bits for the pixel intensity. Pixels not mentioned in the stream remain zero. Values are read as twelve‑bit unsigned quantities and stored in a `numpy.int16` array; if your downstream tooling assumes a particular dynamic range or scaling, you may normalize or rescale accordingly. The decoder proceeds while at least twenty‑two bits remain; it logs errors if the stream ends prematurely or if any decoded coordinate falls outside the declared dimensions.
 
+```
++-------------------- 22 bits --------------------+
+|  Row Index (11 b)  |  Count in Row (11 b)       |--+
++-------------------------------------------------+  |
+                                                     |
+                 For i in [1..count]:                |
+                                                     v
+                +---------------- 23 bits per pixel ---------------+
+                | Column (11 b) |      Intensity Value (12 b)      |
+                +--------------------------------------------------+
+```
+
 ## Acknowledgments
 
 This work has received funding from the European Union's Horizon Europe EIC 2023 Pathfinder Open program under grant agreement No 101129734.
